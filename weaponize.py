@@ -128,6 +128,7 @@ exploit -j
   ))
 
   print 'All output written to the "output" directory.'
+  print
   print 'Start your Metasploit listeners using the command: msfconsole -r output/listeners.rc'
   print 'Then copy the remaining files in your output directory to your web root (usually /var/www/).'
   print 'Alternatively, start a lightweight webserver using the command: cd output && python -m SimpleHTTPServer'
