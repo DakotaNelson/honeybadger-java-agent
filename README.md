@@ -1,4 +1,5 @@
 This progam was heavily inspired by, and uses code from, the Social Engineering Toolkit.
+
 https://www.trustedsec.com/social-engineer-toolkit/
 
 Specifically, this project aims to break out the Java Applet Web Attack method from SET into a standalone tool.
@@ -11,6 +12,9 @@ Specifically, this project aims to break out the Java Applet Web Attack method f
 * example_gmail.html - Example html page included to use in weaponizing.
 
 Example usage:
+
+```
 ./clone.sh https://gmail.com/
 ./weaponize.py index.html 127.0.0.1
 ./serve.sh
+```
