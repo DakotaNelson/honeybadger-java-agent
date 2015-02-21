@@ -118,6 +118,7 @@ set LPORT {osx_port}
 set ExitOnSession False
 exploit -j
 
+sleep 1
 echo "You may now surf to http://{ip_address}/"
 """.format(
     ip_address=ip_address,

@@ -10,7 +10,7 @@ cd output
 
 echo "Shutting down Apache..."
 sudo service apache2 stop
-sudo python -m SimpleHTTPServer 80 & 2>&1 >> http.log
+sudo python -m SimpleHTTPServer 80 >> http.log 2>&1 &
 serverPID="$!"
 echo "Now starting payload listeners. Please be patient."
 msfconsole -r listeners.rc
