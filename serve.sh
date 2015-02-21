@@ -10,6 +10,7 @@ cd output
 
 echo "Shutting down Apache..."
 sudo service apache2 stop
+echo "Starting python web server..."
 sudo python -m SimpleHTTPServer 80 >> http.log 2>&1 &
 serverPID="$!"
 echo "Now starting payload listeners. Please be patient."
