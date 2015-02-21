@@ -17,7 +17,7 @@ msfconsole -r listeners.rc
 
 # When msfconsole shuts down we also want to kill the python server
 echo "Shutting down python web server..."
-kill -INT "$serverPID"
+sudo kill -INT "$serverPID"
 echo "You will need to restart Apache."
 
 cd ..
