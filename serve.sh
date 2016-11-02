@@ -10,6 +10,8 @@ cd output
 
 echo "Shutting down Apache..."
 sudo service apache2 stop
+echo "Shutting down nginx..."
+sudo service nginx stop
 echo "Starting python web server..."
 sudo python -m SimpleHTTPServer 80 >> http.log 2>&1 &
 serverPID="$!"
@@ -20,5 +22,6 @@ msfconsole -r listeners.rc
 echo "Shutting down python web server..."
 sudo kill "$serverPID"
 echo "You will need to restart Apache."
+echo "You will need to restart nginx"
 
 cd ..
