@@ -1,0 +1,1 @@
+This folder is used during the build process as a temporary storage space for the compiled Java bytecode before it's put in a jar file and signed. It should pretty much be empty at any given time, unless there's an error in your build script.
